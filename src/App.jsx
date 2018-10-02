@@ -13,18 +13,32 @@ class App extends Component {
         },
         messages: [ 
           {
+            id: '1',
             username: "Bobby",
             content: "Hello"
           },
           {
+            id: '2',
             username: "Wafers",
             content: "Mmmmm"
           }
         ]
         }
-      };
-  }
-  
+      }
+    }
+    componentDidMount() {
+      console.log("componentDidMount <App />");
+        setTimeout(() => {
+          console.log("Simulating incoming message");
+          const newMessage = {id: '3', username: "Michelle", content: "Hello there!"};
+          const messages = this.state.data.messages.concat(newMessage);
+          this.setState({ data: {
+            messages: messages
+            }
+          })
+        }, 3000);
+      }
+
   render() {
     return (
       <div>

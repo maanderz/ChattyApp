@@ -5,11 +5,11 @@ class Messagelist extends Component {
     render() {
     const messages = this.props.data;
     const listMessages = messages.map((message) => (
-      <Message indMsg={message}/>)
+      <Message key={message.id} indMsg={message}/>)
     )
     return (
       <main className="messages">
-        <li> {listMessages} </li>
+        {listMessages} 
       <div className="message system">
         Anonymous1 changed their name to nomnom.
       </div>
