@@ -6,45 +6,53 @@ import Messagelist from './MessageList.jsx';
 class App extends Component {
   constructor(props) {
     super(props);
+    this.socket = new WebSocket('ws://localhost:3001/')
     this.state = {
-      data: {
-        currentUser: {
-            name: "Mandy"
-        },
-        messages: [ 
-          {
-            id: '1',
-            username: "Bobby",
-            content: "Hello"
-          },
-          {
-            id: '2',
-            username: "Wafers",
-            content: "Mmmmm"
-          }
-        ]
-        }
-      }
-    }
+      currentUser: {name: "Bob"},
+      messages: [] 
+    };
+  }
+
     componentDidMount() {
       console.log("componentDidMount <App />");
-        setTimeout(() => {
-          console.log("Simulating incoming message");
-          const newMessage = {id: '3', username: "Michelle", content: "Hello there!"};
-          const messages = this.state.data.messages.concat(newMessage);
-          this.setState({ data: {
-            messages: messages
-            }
-          })
-        }, 3000);
-      }
+        
+        this.socket.onopen = function() {
+          console.log('Connected to server');
+
+        }
+
+        console.log(this.state)
+
+        this.socket.onmessage = (e) => {
+          const receivedMsg = JSON.parse(e.data);
+          console.log(receivedMsg);
+          console.log("state", this.state)
+
+          this.setState({messages: this.state.messages.concat(receivedMsg)});
+        }
+    };
+    
+      onKeyPress = (event) => {
+        if (event.key === 'Enter') { 
+          const addingMsg = {
+            username: this.state.currentUser.name,
+            content: event.target.value,
+          };
+          this.socket.send(JSON.stringify(addingMsg));
+          console.log(JSON.stringify(addingMsg))
+
+          const messages = this.state.messages.concat(addingMsg);
+          //this.setState({messages: messages})
+          event.target.value = "";
+        }
+    };
 
   render() {
     return (
       <div>
       <Navbar />
-      <Messagelist data={this.state.data.messages}/>
-      <Chatbar data={this.state.data}/>
+      <Messagelist messages={this.state.messages}/>
+      <Chatbar currentUser={this.state} enter={this.onKeyPress} />
       </div>
       )
   }
