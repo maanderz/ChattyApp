@@ -8,9 +8,10 @@ class App extends Component {
     super(props);
     this.socket = new WebSocket('ws://localhost:3001/')
     this.state = {
-      currentUser: {name: "Bob"},
+      currentUser: {username: ''},
       messages: [] 
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 
     componentDidMount() {
@@ -21,8 +22,6 @@ class App extends Component {
 
         }
 
-        console.log(this.state)
-
         this.socket.onmessage = (e) => {
           const receivedMsg = JSON.parse(e.data);
           console.log(receivedMsg);
@@ -30,12 +29,24 @@ class App extends Component {
 
           this.setState({messages: this.state.messages.concat(receivedMsg)});
         }
-    };
-    
+      }
+      //Works on the Username text Box
+      handleChange = (e) => {
+        if (e.key === 'Enter') {
+  
+          let newUser = e.target.value
+          this.setState({currentUser:{username:newUser}})
+        };
+          // console.log("test ",newUser);
+          //let username = this.state.currentUser.username
+          // this.setState({newUser})
+        
+      }
+      //works on the message Te
       onKeyPress = (event) => {
         if (event.key === 'Enter') { 
           const addingMsg = {
-            username: this.state.currentUser.name,
+            username: this.state.currentUser.username,
             content: event.target.value,
           };
           this.socket.send(JSON.stringify(addingMsg));
@@ -52,10 +63,35 @@ class App extends Component {
       <div>
       <Navbar />
       <Messagelist messages={this.state.messages}/>
-      <Chatbar currentUser={this.state} enter={this.onKeyPress} />
+      <Chatbar currentUser={this.state.currentUser} enter={this.onKeyPress} handler={this.handleChange}/>
       </div>
       )
   }
 }
 
+// class UserForm extends Component {
+//   constructor(props){
+//     super(props);
+//     this.state = {value: ''};
+
+//     this.nameHandler = this.nameHandler.bind(this);
+//     this.submitHandler = this.submitHandler.bind(this);
+//   }
+
+//   nameHandler(e) {
+//     this.setState( {value: e.target.value} );
+//   }
+
+//   submitHandler(e) {
+//     if (event.key === 'Enter') { 
+//       const username = this.state.value;
+//     }
+//   }
+//   render() {
+//     <Chatbar username={this.state.value} />
+//   }
+// }
+
+
 export default App;
+

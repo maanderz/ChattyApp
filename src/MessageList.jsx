@@ -10,9 +10,6 @@ class Messagelist extends Component {
     return (
       <main className="messages">
         {listMessages} 
-      <div className="message system">
-        Anonymous1 changed their name to nomnom.
-      </div>
       </main>
       )
     } 
