@@ -8,51 +8,64 @@ class App extends Component {
     super(props);
     this.socket = new WebSocket('ws://localhost:3001/')
     this.state = {
-      currentUser: {username: ''},
-      messages: [] 
+      currentUser: {username: 'Anonymous'},
+      messages: [], 
+      connections: ""
     };
-    this.handleChange = this.handleChange.bind(this);
   }
 
     componentDidMount() {
-      console.log("componentDidMount <App />");
+      //console.log("componentDidMount <App />");
         
         this.socket.onopen = function() {
           console.log('Connected to server');
-
+    
         }
 
         this.socket.onmessage = (e) => {
           const receivedMsg = JSON.parse(e.data);
-          console.log(receivedMsg);
-          console.log("state", this.state)
+          
+          switch (receivedMsg.type) {
+            //console.log('receivedMsg', receivedMsg);
+            case 'incomingMessage':  
+            //   this.setState({messages: this.state.messages.concat(receivedMsg)});
+            // break; 
 
-          this.setState({messages: this.state.messages.concat(receivedMsg)});
+            case 'incomingNotification':
+              this.setState({messages: this.state.messages.concat(receivedMsg)});
+            break;
+
+            case 'connection':
+              this.setState({connections: receivedMsg.number});
+            break;
+          }
         }
       }
-      //Works on the Username text Box
-      handleChange = (e) => {
-        if (e.key === 'Enter') {
-  
-          let newUser = e.target.value
-          this.setState({currentUser:{username:newUser}})
-        };
-          // console.log("test ",newUser);
-          //let username = this.state.currentUser.username
-          // this.setState({newUser})
-        
+
+      //works on username input box
+      changeUsername = (newName) => {
+        const newUser = {
+          username: newName,
+          type: 'postNotification',
+          content:`${this.state.currentUser.username} has changed their username to ${newName}`
+        }
+        this.socket.send(JSON.stringify(newUser))
+        console.log('string', JSON.stringify(newUser))
+        this.setState({currentUser: newUser})
       }
-      //works on the message Te
+
+      //works on the message input box
       onKeyPress = (event) => {
         if (event.key === 'Enter') { 
           const addingMsg = {
+            type: 'postMessage',
             username: this.state.currentUser.username,
             content: event.target.value,
           };
           this.socket.send(JSON.stringify(addingMsg));
           console.log(JSON.stringify(addingMsg))
 
-          const messages = this.state.messages.concat(addingMsg);
+          //const messages = this.state.messages.concat(addingMsg);
           //this.setState({messages: messages})
           event.target.value = "";
         }
@@ -61,37 +74,13 @@ class App extends Component {
   render() {
     return (
       <div>
-      <Navbar />
-      <Messagelist messages={this.state.messages}/>
-      <Chatbar currentUser={this.state.currentUser} enter={this.onKeyPress} handler={this.handleChange}/>
+      <Navbar connected={this.state.connections}/>
+      <Messagelist messages={this.state.messages} notifications={this.state.currentUser.username} />
+      <Chatbar onChangeUsername={this.changeUsername} currentUser={this.state.currentUser} enter={this.onKeyPress} />
       </div>
       )
   }
 }
-
-// class UserForm extends Component {
-//   constructor(props){
-//     super(props);
-//     this.state = {value: ''};
-
-//     this.nameHandler = this.nameHandler.bind(this);
-//     this.submitHandler = this.submitHandler.bind(this);
-//   }
-
-//   nameHandler(e) {
-//     this.setState( {value: e.target.value} );
-//   }
-
-//   submitHandler(e) {
-//     if (event.key === 'Enter') { 
-//       const username = this.state.value;
-//     }
-//   }
-//   render() {
-//     <Chatbar username={this.state.value} />
-//   }
-// }
-
 
 export default App;
 
