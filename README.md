@@ -19,6 +19,9 @@ Chatty was built using React, Webpack, Babel, Node and Websockets in Javascript.
 * [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
 
 ### Getting Started
+
 :one: Install all dependencies
+
 :two: Run the development web servers using `npm start` on localhost:3000 and localhost:3001 simultaneously
+
 :three: Begin chatting!
