@@ -4,7 +4,7 @@ A chat app that allows users to communicate in real-time.  Users can send and re
 
 ### Final Product
 
-!["Screenshot of Chatty"] (https://github.com/maanderz/ChattyApp/blob/master/images/Screen%20Shot%202018-10-05%20at%2010.14.50%20PM.png)
+!["Screenshot of Chatty"](https://github.com/maanderz/ChattyApp/blob/master/images/Screen%20Shot%202018-10-05%20at%2010.14.50%20PM.png?raw=true)
 
 
 ### Tech Stack
