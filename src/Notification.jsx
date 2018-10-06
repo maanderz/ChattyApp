@@ -8,6 +8,6 @@ class Notification extends Component {
       </div>
     )
   }
-}
+};
 
 export default Notification;

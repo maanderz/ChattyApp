@@ -25,25 +25,35 @@ wss.broadcast = function(data) {
       client.send(JSON.stringify(data));
     } 
   })
-}
+};
 
 wss.on('connection', (ws) => {
+    let connectedUser = {
+      type: 'connection',
+      number: wss.clients.size
+    };
+    wss.broadcast(connectedUser);
+    //console.log(wss.clients.size)
+
   //console.log('Client connected');
   ws.on('message', function incoming(message) {
+  //sending all messages back to client side 
     const json = JSON.parse(message);
-    let newMessage = {id: uuidv4(), username: json.username, content: json.content}
-    //ws.send(JSON.stringify(newMessage));
-    console.log(newMessage)
 
-    wss.broadcast(newMessage);
+    switch (json.type) {
+      case 'postMessage':
+      let newMessage = {id: uuidv4(), type: 'incomingMessage', username: json.username, content: json.content}
+      
+      wss.broadcast(newMessage);
+      break;
 
-    // wss.clients.forEach(function(client) {
-    //   if (client !== ws && client.readyState === WebSocket.OPEN) {
-    //     client.send(JSON.stringify(newMessage));
+      case 'postNotification':
+      let newNotification = {id: uuidv4(),  type: 'incomingNotification', username: json.username, content: json.content};
+      
+      wss.broadcast(newNotification);
+      break;
 
-    //   }
-    // })
-    
+    }
   });
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.

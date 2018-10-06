@@ -6,7 +6,7 @@ class Chatbar extends Component {
       if (e.key === 'Enter') {
         this.props.onChangeUsername(e.target.value)
       }
-    }
+    };
     return (
       <footer className="chatbar">
         <input className="chatbar-username" placeholder={this.props.currentUser.username} onKeyPress={onNameKeyPress} />
@@ -14,7 +14,7 @@ class Chatbar extends Component {
       </footer>
     )
   }
-}
+};
 
 export default Chatbar;
 

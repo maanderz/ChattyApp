@@ -1,5 +1,5 @@
 h1 {
-  color: tomato;
+  color: #ffc0cb;
 }
 
 body {
@@ -11,8 +11,8 @@ body {
 }
 
 .chatbar {
-  background: tomato;
-  border-top: 1px solid black;
+  background: #ffc0cb;
+  border-top: 2px solid gray;
   bottom: 0;
   display: flex;
   left: 0;
@@ -23,7 +23,9 @@ body {
 
 .chatbar-message,
 .chatbar-username {
-  border: 1px solid black;
+  font-family: "American Typewriter", serif;
+  border: 2px solid gray;
+  border-radius: 10px;
   display: block;
   height: 40px;
   line-height: 40px;
@@ -66,8 +68,8 @@ body {
 }
 
 .navbar {
-  background: tomato;
-  border-bottom: 1px solid black;
+  background: #ffc0cb;
+  border-bottom: 2px solid gray;
   height: 60px;
   left: 0;
   padding: 0 10px;
@@ -77,7 +79,8 @@ body {
 }
 
 .navbar-brand {
-  color: inherit;
+  font-family: "American Typewriter", serif;
+  color: gray;
   display: block;
   float: left;
   font-weight: 700;
@@ -86,4 +89,19 @@ body {
   line-height: 60px;
   padding: 0 10px;
   text-decoration: none;
+}
+
+.navbar span.online {
+  float: right;
+  margin-top: 1.5em;
+  font-family: "American Typewriter", serif;
+  font-style: italic; 
+  color: gray
+}
+
+.notification-content {
+  margin-left: 1em;
+  color: tomato;
+  font-family: "American Typewriter", serif;
+  font-style: italic; 
 }

@@ -3,7 +3,7 @@ import Message from './Message.jsx';
 import Notification from './Notification.jsx';
 
 class Messagelist extends Component {
-    render() {
+  render() {
     const messages = this.props.messages;
     
     const listMessages = messages.map((message) => {
@@ -12,14 +12,14 @@ class Messagelist extends Component {
       } else {
         return < Notification key={message.id} indMsg={message.content}/>
       }
-    })
+    });
     return (
-      <main className='messages'>
-        {listMessages} 
-      </main>
-      )
-    } 
-}
+    <main className='messages'>
+      {listMessages} 
+    </main>
+    )
+  } 
+};
 
 
 export default Messagelist;
